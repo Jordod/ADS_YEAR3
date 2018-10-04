@@ -30,10 +30,15 @@ void inputAndAverage5()
 	const int SIZE = 5;
 	double nums[SIZE];
 	double total = readIn(nums, SIZE), average;
-	
+
 	average = total / SIZE;
 
 	cout << "Average of your numbers is : " << average << endl;
+
+	for each (double d in nums)
+	{
+		cout << d << (d - average <= 0 ? "+" : "") << average - d  << endl;
+	}
 }
 
 void average5(double nums[])
@@ -43,6 +48,11 @@ void average5(double nums[])
 	double average = total / SIZE;
 
 	cout << "Average of your numbers is : " << average << endl;
+
+	for(int i = 0; i < SIZE; i++)
+	{
+		cout << nums[i] << (nums[i] - average <= 0 ? "+" : "") << average - nums[i] << endl;
+	}
 }
 
 void averageN(double nums[], int size)
@@ -51,6 +61,11 @@ void averageN(double nums[], int size)
 	double average = total / size;
 
 	cout << "Average of your numbers is : " << average << endl;
+
+	for (int i = 0; i < size; i++)
+	{
+		cout << nums[i] << (nums[i] - average <= 0 ? "+" : "") << average - nums[i] << endl;
+	}
 }
 //Use C++ arrays
 
