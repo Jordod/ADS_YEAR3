@@ -20,5 +20,6 @@ int main() {
 	cout << "Trying to delete position < 0: " << list.deleteAt(-1)  << endl;
 	list.display();
 
-    return 0;
+    	system("pause");
+	return 0;
 }
