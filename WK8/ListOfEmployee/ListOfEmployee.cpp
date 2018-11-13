@@ -5,6 +5,10 @@ using namespace std;
 
 ListOfEmployee::ListOfEmployee() : head(nullptr) {}
 
+ListOfEmployee::ListOfEmployee(ListOfEmployee& rh) : head(nullptr) {
+	*this = rh;
+}
+
 
 ListOfEmployee::~ListOfEmployee() {
 	NodeOfEmployee* temp;
@@ -52,4 +56,29 @@ double ListOfEmployee::getSalary(string name) {
 		temp = temp->next;
 	}
 	return temp->e.salary;
+}
+
+
+const ListOfEmployee & ListOfEmployee::operator=(const ListOfEmployee & l) { // operloaded = operator
+	if (this != &l) { // check for self assignment
+		if (head) // free memory of lhs
+		{
+			while (head)
+				deleteMostRecent();
+		}
+
+		NodeOfEmployee* copyPtr = NULL;
+		NodeOfEmployee* origPtr = l.head;
+
+		while (origPtr) {
+			if (!head) {
+				head = copyPtr = new NodeOfEmployee(Employee((origPtr->e).name, (origPtr->e).salary));
+			} else {
+				copyPtr->next = new NodeOfEmployee(Employee((origPtr->e).name, (origPtr->e).salary));
+				copyPtr = copyPtr->next;
+			}
+			origPtr = origPtr->next;
+		}
+	}
+	return *this;
 }

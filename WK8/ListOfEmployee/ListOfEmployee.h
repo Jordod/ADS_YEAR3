@@ -3,6 +3,7 @@ class ListOfEmployee {
 	friend ostream& operator<<(ostream&, const ListOfEmployee&);
 public:
 	ListOfEmployee();
+	ListOfEmployee(ListOfEmployee&);
 	~ListOfEmployee();
 
 	void insertAtFront(string, double);
