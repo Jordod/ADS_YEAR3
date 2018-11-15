@@ -1,8 +1,9 @@
 #include "Employee.h"
-struct NodeOfEmployee {
+class NodeOfEmployee {
 	friend class ListOfEmployee;
+public:
 	NodeOfEmployee(Employee);
+private:
 	Employee e;
 	NodeOfEmployee* next;
 };
-

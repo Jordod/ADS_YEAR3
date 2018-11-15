@@ -40,13 +40,18 @@ const Employee ListOfEmployee::deleteMostRecent() {
 	return toDelete;
 }
 
-ostream& operator<<(ostream& str, const ListOfEmployee& l) {
-	NodeOfEmployee* temp = l.head;
+//Private method cause friends are finicky to figure out
+ostream& ListOfEmployee::display(ostream& o) const {
+	NodeOfEmployee* temp = head;
 	while (temp) {
-		str << temp->e << endl;
+		o << temp->e << endl;
 		temp = temp->next;
 	}
-	return str;
+	return o;
+}
+
+ostream& operator<<(ostream& str, const ListOfEmployee& l) {
+	return l.display(str);
 }
 
 double ListOfEmployee::getSalary(string name) {
@@ -59,8 +64,8 @@ double ListOfEmployee::getSalary(string name) {
 }
 
 
-const ListOfEmployee & ListOfEmployee::operator=(const ListOfEmployee & l) { // operloaded = operator
-	if (this != &l) { // check for self assignment
+const ListOfEmployee & ListOfEmployee::operator=(const ListOfEmployee & r) { // operloaded = operator
+	if (this != &r) { // check for self assignment
 		if (head) // free memory of lhs
 		{
 			while (head)
@@ -68,12 +73,13 @@ const ListOfEmployee & ListOfEmployee::operator=(const ListOfEmployee & l) { // 
 		}
 
 		NodeOfEmployee* copyPtr = NULL;
-		NodeOfEmployee* origPtr = l.head;
+		NodeOfEmployee* origPtr = r.head;
 
 		while (origPtr) {
 			if (!head) {
 				head = copyPtr = new NodeOfEmployee(Employee((origPtr->e).name, (origPtr->e).salary));
-			} else {
+			}
+			else {
 				copyPtr->next = new NodeOfEmployee(Employee((origPtr->e).name, (origPtr->e).salary));
 				copyPtr = copyPtr->next;
 			}

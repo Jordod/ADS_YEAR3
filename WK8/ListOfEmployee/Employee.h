@@ -11,4 +11,3 @@ private:
 	string name;
 	double salary;
 };
-
