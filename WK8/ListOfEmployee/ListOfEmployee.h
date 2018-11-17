@@ -6,11 +6,14 @@ public:
 	ListOfEmployee(ListOfEmployee&);
 	~ListOfEmployee();
 
-	void insertAtFront(string, double);
-	const Employee deleteMostRecent();
+	void push_front(string, double);
+	void push_back(string, double);
+	const Employee deleteAtFront();
+	const Employee remove(int);
+	void insert(int, const Employee&);
 	double getSalary(string);
 
-	const ListOfEmployee& operator=(const ListOfEmployee & l);
+	ListOfEmployee& operator=(const ListOfEmployee & l);
 private:
 	NodeOfEmployee* head;
 	ostream& display(ostream&) const;
