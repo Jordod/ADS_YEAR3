@@ -34,7 +34,7 @@ void ListOfEmployee::push_front(string n, double s) {
 void ListOfEmployee::push_back(string n, double s) {
 	Employee tempEmp(n, s);
 	NodeOfEmployee* temp;
-	for(temp = head; temp->next; temp = temp->next);
+	for(temp = head; temp->next; temp = temp->next); //Actually loops to the end
 	temp->next = new NodeOfEmployee(tempEmp);
 }
 
@@ -54,9 +54,9 @@ void ListOfEmployee::insert(int pos, const Employee& e) {
 	}
 	NodeOfEmployee* temp = head;
 	int i;
-	for(i = 0; (i < pos - 1) && (temp->next); temp = temp->next, i++);
-	if(i >= pos) return;
-	NodeOfEmployee* tempNext = temp->next;
+	for(i = 0; (i < pos - 1) && (temp->next); temp = temp->next, i++); //Loops to pos - 1 or end of list
+	if(i >= pos) return; //Loops to pos - 1 or end of list
+	NodeOfEmployee* tempNext = temp->next; //Store old next
 	temp->next = new NodeOfEmployee(e);
 	temp->next->next = tempNext;
 }
@@ -67,14 +67,16 @@ const Employee ListOfEmployee::remove(int pos) {
 	}
 	NodeOfEmployee* temp = head;
 	int i;
-	for(i = 0; (i < pos - 1) && (temp->next); temp = temp->next, i++);
-	//if(i >= pos) return; //Throw exception
-	NodeOfEmployee* dNode = temp->next;
-	Employee dEmp = temp->next->e;
-	temp->next = temp->next->next;
-	delete dNode;
-	return dEmp;
-	
+	for(i = 0; (i < pos - 1) && (temp->next); temp = temp->next, i++); //Loops to pos - 1 or end of list
+	if(!(i >= pos)) { //Checks if we went too far, wold throw exception if I knew how
+		NodeOfEmployee* dNode = temp->next;
+		Employee dEmp = temp->next->e;
+		temp->next = temp->next->next;
+		delete dNode;
+		return dEmp;
+	} else {
+		return Employee("Invalid Index", 0);
+	}
 }
 
 //Private method cause friends are finicky to figure out
