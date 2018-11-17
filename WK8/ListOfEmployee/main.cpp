@@ -1,31 +1,25 @@
-#include "ListOfEmployee.h"
+#include "ListOfInts.h"
 #include <iostream>
 
 using namespace std;
 
 int main() {
-	ListOfEmployee list;
+    ListOfInts list;
 
-	for (int i = 0; i < 8; i++) {
-		list.insertAtFront(string("Test") + to_string(i), (i + 1) * 100);
-	}
-
-	cout << "After Init:" << endl;
-	cout << list;
-	cout << "Deleted: " << list.deleteMostRecent() << endl;
-	cout << list;
-	cout << "Found : " << list.getSalary("Test0") << " for Employee Test0" << endl;
-
-	ListOfEmployee list2 = list;
-
-	list2.deleteMostRecent();
-	list2.deleteMostRecent();
-
-	cout << "List after copy constructor and 2 deletes" << endl;
-	cout << list2;
-	cout << "List 1:" << endl;
-	cout << list;
-
+    for (int i = 0; i < 10; ++i) {
+        list.insert(i);
+    }
+    list.display();
+    cout << "Deleted: " << list.deleteMostRecent() << " using deleteMostRecent()" << endl;
+    list.display();
+    cout << "Deleted: " << list.deleteAt(3) << " using deleteAt(3)" << endl;
+	cout << "Deleted: " << list.deleteAt(0) << " using deleteAt(0)" << endl;
+	cout << "Deleted: " << list.deleteAt(6) << " using deleteAt(6)" << endl;
+	
+	cout << "Trying to delete position > num of elements: " << list.deleteAt(50) << endl;
+	cout << "Trying to delete position < 0: " << list.deleteAt(-1)  << endl;
+	list.display();
+	
 	system("pause");
-	return 0;
+    return 0;
 }
