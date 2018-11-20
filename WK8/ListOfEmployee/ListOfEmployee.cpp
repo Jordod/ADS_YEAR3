@@ -46,6 +46,15 @@ const Employee ListOfEmployee::deleteAtFront() {
 	return toDelete;
 }
 
+const Employee ListOfEmployee::deleteAtEnd() {
+	NodeOfEmployee* temp;
+	for (temp = head; temp->next->next; temp = temp->next);
+	Employee tempEmp = temp->next->e;
+	delete temp->next;
+	temp->next = nullptr;
+	return tempEmp;
+}
+
 //Testing Delete and Insert at
 void ListOfEmployee::insert(int pos, const Employee& e) {
 	if(pos == 0) {
@@ -77,6 +86,20 @@ const Employee ListOfEmployee::remove(int pos) {
 	} else {
 		return Employee("Invalid Index", 0);
 	}
+}
+
+const Employee ListOfEmployee::remove(string e) {
+	NodeOfEmployee * temp;
+	for (temp = head; temp->next; temp = temp->next) {
+		if (temp->next->e.name == e) {
+			NodeOfEmployee * dNode = temp->next;
+			Employee dEmp = dNode->e;
+			temp->next = dNode->next;
+			delete dNode;
+			return dEmp;
+		}
+	}
+	return Employee("Employee Not Found", 0);
 }
 
 //Private method cause friends are finicky to figure out
