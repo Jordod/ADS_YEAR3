@@ -32,27 +32,21 @@ void ListOfEmployee::push_front(string n, double s) {
 }
 
 void ListOfEmployee::push_back(string n, double s) {
-	Employee tempEmp(n, s);
-	NodeOfEmployee* temp;
-	for(temp = head; temp->next; temp = temp->next); //Actually loops to the end
-	temp->next = new NodeOfEmployee(tempEmp);
+	if(!head) {
+		head = new NodeOfEmployee(Employee(n,s));
+	} else {
+		NodeOfEmployee* temp = head;
+		while (temp->next) temp = temp->next;
+		temp->next = new NodeOfEmployee(Employee(n,s));
+	}
 }
 
 const Employee ListOfEmployee::deleteAtFront() {
 	NodeOfEmployee* temp = head;
 	Employee toDelete = temp->e;
-	head = temp->next;
+	head = head->next;
 	delete temp;
 	return toDelete;
-}
-
-const Employee ListOfEmployee::deleteAtEnd() {
-	NodeOfEmployee* temp;
-	for (temp = head; temp->next->next; temp = temp->next);
-	Employee tempEmp = temp->next->e;
-	delete temp->next;
-	temp->next = nullptr;
-	return tempEmp;
 }
 
 //Testing Delete and Insert at
@@ -63,11 +57,34 @@ void ListOfEmployee::insert(int pos, const Employee& e) {
 	}
 	NodeOfEmployee* temp = head;
 	int i;
-	for(i = 0; (i < pos - 1) && (temp->next); temp = temp->next, i++); //Loops to pos - 1 or end of list
-	if(i >= pos) return; //Loops to pos - 1 or end of list
-	NodeOfEmployee* tempNext = temp->next; //Store old next
+	for(i = 0; (i < pos - 1) && (temp->next); temp = temp->next, i++);
+	if(i >= pos) return;
+	NodeOfEmployee* tempNext = temp->next;
 	temp->next = new NodeOfEmployee(e);
 	temp->next->next = tempNext;
+}
+
+//Private method cause friends are finicky to figure out
+ostream& ListOfEmployee::display(ostream& o) const {
+	NodeOfEmployee* temp = head;
+	while (temp) {
+		o << temp->e << endl;
+		temp = temp->next;
+	}
+	return o;
+}
+
+ostream& operator<<(ostream& str, const ListOfEmployee& l) {
+	return l.display(str);
+}
+
+double ListOfEmployee::getSalary(string name) {
+	NodeOfEmployee* temp = head;
+	while (temp) {
+		if (temp->e.name == name) return temp->e.salary;
+		temp = temp->next;
+	}
+	return -1;
 }
 
 const Employee ListOfEmployee::remove(int pos) {
@@ -77,7 +94,7 @@ const Employee ListOfEmployee::remove(int pos) {
 	NodeOfEmployee* temp = head;
 	int i;
 	for(i = 0; (i < pos - 1) && (temp->next); temp = temp->next, i++); //Loops to pos - 1 or end of list
-	if(!(i >= pos)) { //Checks if we went too far, wold throw exception if I knew how
+	if(i < pos) { //Checks if we went too far, wold throw exception if I knew how
 		NodeOfEmployee* dNode = temp->next;
 		Employee dEmp = temp->next->e;
 		temp->next = temp->next->next;
@@ -102,31 +119,21 @@ const Employee ListOfEmployee::remove(string e) {
 	return Employee("Employee Not Found", 0);
 }
 
-//Private method cause friends are finicky to figure out
-ostream& ListOfEmployee::display(ostream& o) const {
-	NodeOfEmployee* temp = head;
-	while (temp) {
-		o << temp->e << endl;
+
+const Employee ListOfEmployee::deleteAtEnd() {
+	Employee deleted;
+	NodeOfEmployee * temp = head;
+	while(temp->next->next) {
 		temp = temp->next;
 	}
-	return o;
-}
-
-ostream& operator<<(ostream& str, const ListOfEmployee& l) {
-	return l.display(str);
-}
-
-double ListOfEmployee::getSalary(string name) {
-	NodeOfEmployee* temp = head;
-	while (temp) {
-		if (temp->e.name == name) return temp->e.salary;
-		temp = temp->next;
-	}
-	return temp->e.salary;
+	deleted = temp->next->e;
+	delete temp->next;
+	temp->next = nullptr;
+	return deleted;
 }
 
 
-ListOfEmployee& ListOfEmployee::operator=(const ListOfEmployee & r) { // operloaded = operator
+ListOfEmployee& ListOfEmployee::operator=(const ListOfEmployee & r) { // overloaded = operator
 	if (this != &r) { // check for self assignment
 		if (head) // free memory of lhs
 		{
@@ -134,7 +141,7 @@ ListOfEmployee& ListOfEmployee::operator=(const ListOfEmployee & r) { // operloa
 				deleteAtFront();
 		}
 
-		NodeOfEmployee* copyPtr = NULL;
+		NodeOfEmployee* copyPtr = nullptr;
 		NodeOfEmployee* origPtr = r.head;
 
 		while (origPtr) {
